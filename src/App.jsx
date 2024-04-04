@@ -6,31 +6,20 @@ function App() {
   return (
     <>
       {show && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-300 p-8 rounded">
-          <form className="flex flex-col gap-2" action="">
+        <div id="widget-container">
+          <form id="widget-container-form" action="">
             <label htmlFor="name">Name</label>
-            <input
-              name="name"
-              type="text"
-              className="border-2 border-black rounded"
-            />
+            <input name="name" type="text" id="widget-container-form-input" />
             <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              type="text"
-              className="border-2 border-black rounded"
-            />
-            <button type="submit" className="bg-black text-white rounded py-1">
+            <input name="email" type="text" id="widget-container-form-input" />
+            <button id="widget-container-form-button" type="submit">
               Submit
             </button>
           </form>
         </div>
       )}
 
-      <button
-        onClick={() => setShow(!show)}
-        className="absolute bottom-10 right-10 rounded h-20 w-20 bg-blue-300 p-3"
-      >
+      <button onClick={() => setShow(!show)} id="widget-container-trigger">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle
             cx="3"
@@ -53,3 +42,12 @@ function App() {
 }
 
 export default App;
+// className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-300 p-8 rounded"
+
+// className="absolute bottom-10 right-10 rounded h-20 w-20 bg-blue-300 p-3"
+
+// className="border-2 border-black rounded"
+
+// className="flex flex-col gap-2"
+
+// className="bg-black text-white rounded py-1"
