@@ -4,12 +4,14 @@ import App from "./App.jsx";
 import "./index.css";
 
 const widgetDivs = document.querySelectorAll(".nicoraynaud-finance-widget");
+const widgetBgColor = document
+  .querySelector("script[data-widget-bg-color]")
+  .getAttribute("data-widget-bg-color");
 
 widgetDivs.forEach((div) => {
-  const bgColor = div.getAttribute("data-widget-bg-color");
   ReactDOM.createRoot(div).render(
     <React.StrictMode>
-      <App bgColor={bgColor} />
+      <App bgColor={widgetBgColor} />
     </React.StrictMode>
   );
 });
