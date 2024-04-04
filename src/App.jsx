@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 
-function App() {
+function App({ bgColor }) {
   const [show, setShow] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -14,7 +14,8 @@ function App() {
       {show && (
         <div
           id="widget-container"
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-300 p-8 rounded"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded"
+          style={{ backgroundColor: bgColor }}
         >
           <form
             id="widget-container-form"
