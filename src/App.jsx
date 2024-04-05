@@ -10,11 +10,11 @@ function App({ bgColor }) {
     console.log("Form data:", formDataObject);
   };
   return (
-    <>
+    <div className="relative">
       {show && (
         <div
           id="widget-container"
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded"
+          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded"
           style={{ backgroundColor: bgColor }}
         >
           <form
@@ -44,7 +44,7 @@ function App({ bgColor }) {
 
       <button
         onClick={() => setShow(!show)}
-        className="absolute bottom-10 right-10 rounded h-20 w-20 bg-blue-300 p-3"
+        className="fixed bottom-10 right-10 rounded h-20 w-20 bg-blue-300 p-3"
         id="widget-container-trigger"
       >
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +64,7 @@ function App({ bgColor }) {
           />
         </svg>
       </button>
-    </>
+    </div>
   );
 }
 
