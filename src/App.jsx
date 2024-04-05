@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function App({ bgColor }) {
   const [show, setShow] = useState(false);
@@ -9,11 +9,27 @@ function App({ bgColor }) {
     const formDataObject = Object.fromEntries(formData.entries());
     console.log("Form data:", formDataObject);
   };
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (formRef.current && !formRef.current.contains(event.target))
+        setShow(false); // Close the form if clicked outside
+    }
+
+    // Attach event listener when the form is shown
+    if (show) document.addEventListener("mousedown", handleClickOutside);
+    else document.removeEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener when component unmounts
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [show]);
   return (
     <div className="relative z-50">
       {show && (
         <div
           id="widget-container"
+          ref={formRef}
           className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded"
           style={{ backgroundColor: bgColor }}
         >
