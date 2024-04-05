@@ -10,7 +10,7 @@ function App({ bgColor }) {
     console.log("Form data:", formDataObject);
   };
   return (
-    <div className="relative">
+    <div className="relative z-50">
       {show && (
         <div
           id="widget-container"
