@@ -3,27 +3,25 @@ import { useState, useRef, useEffect } from "react";
 
 function App({ bgColor }) {
   const [show, setShow] = useState(false);
+  const formRef = useRef(null);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formDataObject = Object.fromEntries(formData.entries());
     console.log("Form data:", formDataObject);
   };
-  const formRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (formRef.current && !formRef.current.contains(event.target))
-        setShow(false); // Close the form if clicked outside
+        setShow(false);
     }
-
-    // Attach event listener when the form is shown
     if (show) document.addEventListener("mousedown", handleClickOutside);
     else document.removeEventListener("mousedown", handleClickOutside);
-
-    // Clean up the event listener when component unmounts
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [show]);
+
   return (
     <div className="relative z-50">
       {show && (
@@ -59,7 +57,10 @@ function App({ bgColor }) {
       )}
 
       <button
-        onClick={() => setShow(!show)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShow(!show);
+        }}
         className="fixed bottom-10 right-10 rounded h-20 w-20 bg-blue-300 p-3"
         id="widget-container-trigger"
       >
