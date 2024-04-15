@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 
-const widgetBgColor = document
-  .querySelector("script[data-widget-bg-color]")
-  .getAttribute("data-widget-bg-color");
+// const widgetBgColor = document
+//   .querySelector("script[data-widget-bg-color]")
+//   .getAttribute("data-widget-bg-color");
 
 // const topContainer = document.body.children[0];
 
@@ -14,7 +14,7 @@ const widgetBgColor = document
 
 ReactDOM.createRoot().render(
   <React.StrictMode>
-    <App bgColor={widgetBgColor} />
+    <App bgColor={green} />
   </React.StrictMode>
 );
 
