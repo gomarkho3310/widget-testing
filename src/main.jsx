@@ -7,14 +7,14 @@ import "./index.css";
 //   .querySelector("script[data-widget-bg-color]")
 //   .getAttribute("data-widget-bg-color");
 
-// const topContainer = document.body.children[0];
+const topContainer = document.body.children[0];
 
-// const widgetRoot = document.createElement("div");
-// topContainer.appendChild(widgetRoot);
+const widgetRoot = document.createElement("div");
+topContainer.appendChild(widgetRoot);
 
-ReactDOM.createRoot().render(
+ReactDOM.createRoot(widgetRoot).render(
   <React.StrictMode>
-    <App bgColor={green} />
+    <App bgColor={"green"} />
   </React.StrictMode>
 );
 
