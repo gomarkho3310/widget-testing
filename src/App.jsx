@@ -119,14 +119,48 @@ function App() {
       color: "0.888rem",
       fontWeight: 400,
     },
+    lowerSection: {
+      display: "flex",
+      paddingTop: "0.5rem",
+      paddingBottom: "0.5rem",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      backgroundColor: "#ffffff",
+      height: "40%",
+    },
     form: {
-      backgroundColor: "",
+      display: "flex",
+      flexDirection: "column",
+      backgroundColor: "#ffffff",
+      borderRadius: "0.25rem",
+      borderWidth: "1px",
+      padding: "0.5rem",
+      zIndex: 10,
+      fontSize: "0.875rem",
+      gap: "0.25rem",
+      lineHeight: "1.25rem",
+      boxShadow:
+        "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      width: "80%",
     },
-    wave: {
-      color: "Lavender",
+    form_submitButton: {
+      background: "#527B97",
+      color: "#ffffff",
+      fontSize: "11px",
+      paddingLeft: "0.75rem",
+      paddingRight: "0.75rem",
+      borderRadius: "0.25rem",
     },
-    formButton: {},
-    widget: {},
+    form_label: {
+      fontSize: "11px",
+    },
+    form_input: {
+      borderRadius: "0.25rem",
+      borderWidth: "1px",
+      borderColor: "#9CA3AF",
+      outlineStyle: "none",
+    },
   };
 
   return (
@@ -148,34 +182,31 @@ function App() {
             </p>
           </section>
           {/* form */}
-          <section className="bg-white h-[40%] flex justify-center items-center w-full py-2">
+          <section style={styles.lowerSection}>
             <form
               id="widget-container-form"
-              className="flex flex-col bg-white p-2 border rounded z-10 text-sm shadow-xl w-[80%] gap-1"
+              style={styles.form}
               onSubmit={handleSubmit}
             >
-              <label className="text-[11px]" htmlFor="name">
+              <label style={styles.form_label} htmlFor="name">
                 Name
               </label>
               <input
                 name="name"
                 type="text"
-                className="border border-gray-400 rounded outline-none"
+                style={styles.form_input}
                 id="widget-container-form-input"
               />
-              <label className="text-[11px]" htmlFor="phone">
+              <label style={styles.form_label} htmlFor="phone">
                 Phone
               </label>
-              <div className="flex justify-between">
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <input
                   name="phone"
                   type="tel"
-                  className="border border-gray-400 rounded w-[75%] outline-none"
+                  style={{ ...styles.form_input, width: "75%" }}
                 />
-                <button
-                  type="submit"
-                  className="bg-[#527B97] text-white rounded text-[11px] px-3"
-                >
+                <button type="submit" style={styles.form_submitButton}>
                   Call me
                 </button>
               </div>
