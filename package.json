@@ -11,6 +11,7 @@
     "build:widget": "parcel build src/main.jsx --no-source-maps -d widget cp dist/assets/*.css widget/index.css"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0"
