@@ -40,7 +40,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://3.29.188.19:8443/v1/widgets/${widgetKey}`
+          `http://3.29.188.19:8443/v1/pub/widgets/${widgetKey}`
         );
         setLoading(false);
         setData(response.data.data);
@@ -175,7 +175,7 @@ function App() {
               {data?.design?.title_text || "Get a call within 55 seconds"}
             </h1>
             <p style={styles.upperSection_subtitle}>
-              {data?.design?.sub_text || "Leave your number bellow"}
+              {data?.design?.sub_text || "Leave your number below"}
               <br />
               <span style={styles.upperSection_subtitle_span}>
                 and we will call you right away!
