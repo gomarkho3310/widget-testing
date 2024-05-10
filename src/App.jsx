@@ -13,19 +13,6 @@ function App() {
     "widgetKey"
   );
 
-  // form submission
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const formDataObject = Object.fromEntries(formData.entries());
-    console.log("Form data:", formDataObject);
-
-    const response = await axios.post(
-      "http://3.29.188.19:8443/v1/call",
-      formData
-    );
-  };
-
   // use effect
   useEffect(() => {
     // handle click outside
@@ -40,7 +27,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://3.29.188.19:8443/v1/pub/widgets/${widgetKey}`
+          `http://3.29.188.19:8443/v1/pub/widgets/663c7bea0880437cda116be1`
         );
         setLoading(false);
         setData(response.data.data);
@@ -54,12 +41,26 @@ function App() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // styles
+  console.log(data);
+
+  // form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formDataObject = Object.fromEntries(formData.entries());
+    console.log("Form data:", formDataObject);
+
+    const response = await axios.post(
+      "http://3.29.188.19:8443/v1/pub/call",
+      formData
+    );
+  };
+
   const styles = {
     main: {
       position: "relative",
       zIndex: 50,
-      fontFamily: "Roboto, sans-serif",
+      fontFamily: data?.design?.font_family || "Helvetica",
     },
     openButton: {
       position: "fixed",
@@ -68,16 +69,16 @@ function App() {
       borderRadius: "4px",
       height: "5rem",
       width: "5rem",
-      backgroundColor: "#90cdf4",
+      backgroundColor: data?.design?.widget_button_color || "#90cdf4",
       padding: "0.75rem",
     },
     wrapper: {
       backgroundImage:
-        data?.design?.background_image ||
+        `url(${data?.design?.background_image})` ||
         "url(https://source.unsplash.com/user/c_v_r/1900x800)",
       backgroundSize: "100% 60%",
       backgroundRepeat: "no-repeat",
-      backgroundColor: "#527B97",
+      backgroundColor: data?.design?.background_color || "#527B97",
       position: "fixed",
       top: "50%",
       left: "50%",
@@ -89,7 +90,7 @@ function App() {
       borderRadius: "0.25rem",
       borderWidth: "1px",
       borderColor: "#527B97",
-      minWidth: "23.938rem",
+      width: "23.938rem",
       minHeight: "18.063rem",
       height: "25.063rem",
     },
@@ -108,13 +109,17 @@ function App() {
     },
     upperSection_title: {
       textAlign: "center",
-      color: "1.13rem",
+      color: data?.design?.title_color || "black",
       fontWeight: 700,
+      fontSize: "1.13rem",
+      width: "60%",
     },
     upperSection_subtitle: {
       textAlign: "center",
-      color: "0.95rem",
+      color: data?.design?.sub_text_color || "black",
       fontWeight: 600,
+      fontSize: "0.95rem",
+      width: "70%",
     },
     upperSection_subtitle_span: {
       color: "0.888rem",
@@ -127,13 +132,13 @@ function App() {
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      backgroundColor: "#ffffff",
+      backgroundColor: data?.design?.widget_button_color || "#ffffff",
       height: "40%",
     },
     form: {
       display: "flex",
       flexDirection: "column",
-      backgroundColor: "#ffffff",
+      backgroundColor: data?.design?.form_background_color || "#ffffff",
       borderRadius: "0.25rem",
       borderWidth: "1px",
       padding: "0.5rem",
@@ -146,8 +151,8 @@ function App() {
       width: "80%",
     },
     form_submitButton: {
-      background: "#527B97",
-      color: "#ffffff",
+      background: data?.design?.form_button_color || "#ffffff",
+      color: data?.design?.form_text_color || "black",
       fontSize: "11px",
       paddingLeft: "0.75rem",
       paddingRight: "0.75rem",
@@ -170,12 +175,21 @@ function App() {
         <div id="widget-container" ref={formRef} style={styles.wrapper}>
           {/* image and text */}
           <section style={styles.upperSection}>
-            <p style={styles.upperSection_name}>Ahyan Real State</p>
+            {data?.design?.logo && (
+              <img
+                src={data?.design.logo}
+                alt="Ahyan Real State"
+                className="w-10"
+              />
+            )}
+            {!data?.design?.logo && (
+              <p style={styles.upperSection_name}>Ahyan Real State</p>
+            )}
             <h1 style={styles.upperSection_title}>
-              {data?.design?.title_text || "Get a call within 55 seconds"}
+              {data?.texts?.title_text || "Get a call within 55 seconds"}
             </h1>
             <p style={styles.upperSection_subtitle}>
-              {data?.design?.sub_text || "Leave your number below"}
+              {data?.texts?.sub_text || "Leave your number below"}
               <br />
               <span style={styles.upperSection_subtitle_span}>
                 and we will call you right away!
@@ -208,7 +222,7 @@ function App() {
                   style={{ ...styles.form_input, width: "75%" }}
                 />
                 <button type="submit" style={styles.form_submitButton}>
-                  Call me
+                  {data?.texts?.button_text || "Call me"}
                 </button>
               </div>
             </form>
