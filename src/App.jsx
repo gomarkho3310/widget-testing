@@ -96,7 +96,7 @@ function App() {
     console.log("Form data:", formDataObject);
 
     const response = await axios.post(
-      "http://3.29.188.19:8001/v1/pub/call",
+      "http://3.29.188.19:8002/v1/pub/call",
       formData
     );
   };
