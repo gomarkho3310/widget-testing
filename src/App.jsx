@@ -40,9 +40,53 @@ function App() {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+  // -------------------------------------
+  // function isInWorkingHours(workingHours, currentTime) {
+  //   const currentDay = currentTime.toLocaleDateString("en-US", {
+  //     weekday: "long",
+  //   });
+  //   const currentHour = currentTime.getHours();
+  //   const currentMinute = currentTime.getMinutes();
 
-  console.log(data);
+  //   // Find the working hours for the current day
+  //   const todaysWorkingHours = workingHours?.find(
+  //     (hour) => hour.day === currentDay
+  //   );
 
+  //   if (todaysWorkingHours) {
+  //     const startTime = new Date(todaysWorkingHours.start_time).getHours();
+  //     const startMinute = new Date(todaysWorkingHours.start_time).getMinutes();
+  //     const endTime = new Date(todaysWorkingHours.end_time).getHours();
+  //     const endMinute = new Date(todaysWorkingHours.end_time).getMinutes();
+
+  //     // Check if current time is within working hours
+  //     if (
+  //       (currentHour > startTime ||
+  //         (currentHour === startTime && currentMinute >= startMinute)) &&
+  //       (currentHour < endTime ||
+  //         (currentHour === endTime && currentMinute <= endMinute))
+  //     ) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+
+  // const currentTime = new Date(); // Get current time
+  // const isInWorkingHoursNow = isInWorkingHours(
+  //   data?.call_routing?.working_hours,
+  //   currentTime
+  // );
+
+  // if (isInWorkingHoursNow) {
+  //   console.log("You're currently within working hours.");
+  //   // Show appropriate text for being within working hours
+  // } else {
+  //   console.log("You're currently outside of working hours.");
+  //   // Show appropriate text for being outside of working hours
+  // }
+
+  // ----------------------------------------
   // form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -103,6 +147,9 @@ function App() {
       color: "#ffffff",
       height: "60%",
     },
+    upperSection_logo: {
+      widht: "2.5rem",
+    },
     upperSection_name: {
       fontSize: "0.806rem",
       fontWeight: "600",
@@ -112,14 +159,14 @@ function App() {
       color: data?.design?.title_color || "black",
       fontWeight: 700,
       fontSize: "1.13rem",
-      width: "60%",
+      width: "70%",
     },
     upperSection_subtitle: {
       textAlign: "center",
       color: data?.design?.sub_text_color || "black",
       fontWeight: 600,
       fontSize: "0.95rem",
-      width: "70%",
+      width: "80%",
     },
     upperSection_subtitle_span: {
       color: "0.888rem",
@@ -151,8 +198,8 @@ function App() {
       width: "80%",
     },
     form_submitButton: {
-      background: data?.design?.form_button_color || "#ffffff",
-      color: data?.design?.form_text_color || "black",
+      background: data?.design?.form_button_color || "#527B97",
+      color: data?.design?.form_text_color || "white",
       fontSize: "11px",
       paddingLeft: "0.75rem",
       paddingRight: "0.75rem",
@@ -179,7 +226,7 @@ function App() {
               <img
                 src={data?.design.logo}
                 alt="Ahyan Real State"
-                className="w-10"
+                style={styles.upperSection_logo}
               />
             )}
             {!data?.design?.logo && (
