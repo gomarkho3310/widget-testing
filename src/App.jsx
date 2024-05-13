@@ -27,7 +27,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://3.29.188.19:8443/v1/pub/widgets/663c7bea0880437cda116be1`
+          `http://3.29.188.19:8001/v1/pub/widgets/663c7bea0880437cda116be1`
         );
         setLoading(false);
         setData(response.data.data);
@@ -40,6 +40,7 @@ function App() {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   // -------------------------------------
   // function isInWorkingHours(workingHours, currentTime) {
   //   const currentDay = currentTime.toLocaleDateString("en-US", {
@@ -85,8 +86,8 @@ function App() {
   //   console.log("You're currently outside of working hours.");
   //   // Show appropriate text for being outside of working hours
   // }
-
   // ----------------------------------------
+
   // form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -95,7 +96,7 @@ function App() {
     console.log("Form data:", formDataObject);
 
     const response = await axios.post(
-      "http://3.29.188.19:8443/v1/pub/call",
+      "http://3.29.188.19:8001/v1/pub/call",
       formData
     );
   };
@@ -149,6 +150,7 @@ function App() {
     },
     upperSection_logo: {
       widht: "2.5rem",
+      height: "2.5rem",
     },
     upperSection_name: {
       fontSize: "0.806rem",
