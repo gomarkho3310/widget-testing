@@ -97,7 +97,12 @@ function App() {
 
     const response = await axios.post(
       "http://3.29.188.19:8002/v1/pub/call",
-      formData
+      formData,
+      {
+        headers: {
+          WIDGET_KEY: "663c7bea0880437cda116be1",
+        },
+      }
     );
   };
 
