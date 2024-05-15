@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
-function App() {
+function App({ wkey }) {
   const [show, setShow] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://3.29.188.19:8001/v1/pub/widgets/${widgetKey}`
+          `http://3.29.188.19:8001/v1/pub/widgets/${wkey}`
         );
         setLoading(false);
         setData(response.data.data);
@@ -86,7 +86,7 @@ function App() {
       formDataObject,
       {
         headers: {
-          WIDGET_KEY: "664201a0039fd7d237e19e2b",
+          WIDGET_KEY: wkey,
         },
       }
     );

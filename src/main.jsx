@@ -12,9 +12,11 @@ const topContainer = document.body.children[0];
 const widgetRoot = document.createElement("div");
 topContainer.appendChild(widgetRoot);
 
+const widgetKey = widgetRoot.dataset.key;
+
 ReactDOM.createRoot(widgetRoot).render(
   <React.StrictMode>
-    <App />
+    <App wkey={widgetKey} />
   </React.StrictMode>
 );
 
