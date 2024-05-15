@@ -9,9 +9,7 @@ function App() {
   const [error, setError] = useState(null);
   const formRef = useRef(null);
 
-  const widgetKey = new URLSearchParams(window.location.search).get(
-    "widgetKey"
-  );
+  const widgetKey = new URLSearchParams(window.location.search).get("key");
 
   // use effect
   useEffect(() => {
@@ -27,7 +25,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://3.29.188.19:8001/v1/pub/widgets/663c7bea0880437cda116be1`
+          `http://3.29.188.19:8001/v1/pub/widgets/${widgetKey}`
         );
         setLoading(false);
         setData(response.data.data);
@@ -41,52 +39,40 @@ function App() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // -------------------------------------
-  // function isInWorkingHours(workingHours, currentTime) {
-  //   const currentDay = currentTime.toLocaleDateString("en-US", {
-  //     weekday: "long",
-  //   });
-  //   const currentHour = currentTime.getHours();
-  //   const currentMinute = currentTime.getMinutes();
+  // working hours check
+  function isInWorkingHours(workingHours, currentTime) {
+    const currentDay = currentTime.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+    const todaysWorkingHours = workingHours?.find(
+      (day) => day.day === currentDay
+    );
+    if (todaysWorkingHours) {
+      const startTime = new Date(todaysWorkingHours.start_time).getUTCHours();
+      const startMinute = new Date(
+        todaysWorkingHours.start_time
+      ).getUTCMinutes();
 
-  //   // Find the working hours for the current day
-  //   const todaysWorkingHours = workingHours?.find(
-  //     (hour) => hour.day === currentDay
-  //   );
+      const endTime = new Date(todaysWorkingHours.end_time).getUTCHours();
+      const endMinute = new Date(todaysWorkingHours.end_time).getUTCMinutes();
 
-  //   if (todaysWorkingHours) {
-  //     const startTime = new Date(todaysWorkingHours.start_time).getHours();
-  //     const startMinute = new Date(todaysWorkingHours.start_time).getMinutes();
-  //     const endTime = new Date(todaysWorkingHours.end_time).getHours();
-  //     const endMinute = new Date(todaysWorkingHours.end_time).getMinutes();
-
-  //     // Check if current time is within working hours
-  //     if (
-  //       (currentHour > startTime ||
-  //         (currentHour === startTime && currentMinute >= startMinute)) &&
-  //       (currentHour < endTime ||
-  //         (currentHour === endTime && currentMinute <= endMinute))
-  //     ) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-
-  // const currentTime = new Date(); // Get current time
-  // const isInWorkingHoursNow = isInWorkingHours(
-  //   data?.call_routing?.working_hours,
-  //   currentTime
-  // );
-
-  // if (isInWorkingHoursNow) {
-  //   console.log("You're currently within working hours.");
-  //   // Show appropriate text for being within working hours
-  // } else {
-  //   console.log("You're currently outside of working hours.");
-  //   // Show appropriate text for being outside of working hours
-  // }
-  // ----------------------------------------
+      if (
+        (currentHour > startTime ||
+          (currentHour === startTime && currentMinute >= startMinute)) &&
+        (currentHour < endTime ||
+          (currentHour === endTime && currentMinute <= endMinute))
+      )
+        return true;
+    }
+    return false;
+  }
+  const currentTime = new Date();
+  const working = isInWorkingHours(
+    data?.call_routing?.working_hours,
+    currentTime
+  );
 
   // form submission
   const handleSubmit = async (event) => {
@@ -97,10 +83,10 @@ function App() {
 
     const response = await axios.post(
       "http://3.29.188.19:8002/v1/pub/call",
-      formData,
+      formDataObject,
       {
         headers: {
-          WIDGET_KEY: "663c7bea0880437cda116be1",
+          WIDGET_KEY: "664201a0039fd7d237e19e2b",
         },
       }
     );
@@ -240,10 +226,10 @@ function App() {
               <p style={styles.upperSection_name}>Ahyan Real State</p>
             )}
             <h1 style={styles.upperSection_title}>
-              {data?.texts?.title_text || "Get a call within 55 seconds"}
+              {working ? data?.texts?.title_text : data?.texts?.out_title_text}
             </h1>
             <p style={styles.upperSection_subtitle}>
-              {data?.texts?.sub_text || "Leave your number below"}
+              {working ? data?.texts?.sub_text : data?.texts?.out_sub_text}
               <br />
               <span style={styles.upperSection_subtitle_span}>
                 and we will call you right away!
@@ -271,12 +257,14 @@ function App() {
               </label>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <input
-                  name="phone"
+                  name="phone_number"
                   type="tel"
                   style={{ ...styles.form_input, width: "75%" }}
                 />
                 <button type="submit" style={styles.form_submitButton}>
-                  {data?.texts?.button_text || "Call me"}
+                  {working
+                    ? data?.texts?.button_text
+                    : data?.texts?.out_button_text}
                 </button>
               </div>
             </form>
