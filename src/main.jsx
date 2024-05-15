@@ -3,16 +3,14 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 
-// const widgetBgColor = document
-//   .querySelector("script[data-widget-bg-color]")
-//   .getAttribute("data-widget-bg-color");
+const widgetKey = document
+  .querySelector("script[data-key]")
+  .getAttribute("data-key");
 
 const topContainer = document.body.children[0];
 
 const widgetRoot = document.createElement("div");
 topContainer.appendChild(widgetRoot);
-
-const widgetKey = widgetRoot.dataset.key;
 
 ReactDOM.createRoot(widgetRoot).render(
   <React.StrictMode>
