@@ -138,6 +138,7 @@ function App({ wkey }) {
       alignItems: "center",
       color: "#ffffff",
       height: "60%",
+      width: "80%",
     },
     upperSection_logo: {
       widht: "2.5rem",
@@ -151,15 +152,13 @@ function App({ wkey }) {
       textAlign: "center",
       color: data?.design?.title_color || "black",
       fontWeight: 700,
-      fontSize: "1.13rem",
-      width: "70%",
+      fontSize: "1rem",
     },
     upperSection_subtitle: {
       textAlign: "center",
       color: data?.design?.sub_text_color || "black",
       fontWeight: 600,
-      fontSize: "0.95rem",
-      width: "80%",
+      fontSize: "0.85rem",
     },
     upperSection_subtitle_span: {
       color: "0.888rem",
@@ -226,14 +225,14 @@ function App({ wkey }) {
               <p style={styles.upperSection_name}>Ahyan Real State</p>
             )}
             <h1 style={styles.upperSection_title}>
-              {working ? data?.texts?.title_text : data?.texts?.out_title_text}
+              {working
+                ? data?.texts?.title_text || "Get call within 55 seconds"
+                : data?.texts?.out_title_text || "Get call within 55 seconds"}
             </h1>
             <p style={styles.upperSection_subtitle}>
-              {working ? data?.texts?.sub_text : data?.texts?.out_sub_text}
-              <br />
-              <span style={styles.upperSection_subtitle_span}>
-                and we will call you right away!
-              </span>
+              {working
+                ? data?.texts?.sub_text || "Leave your number below"
+                : data?.texts?.out_sub_text || "Leave your number below"}
             </p>
           </section>
           {/* form */}
@@ -263,8 +262,8 @@ function App({ wkey }) {
                 />
                 <button type="submit" style={styles.form_submitButton}>
                   {working
-                    ? data?.texts?.button_text
-                    : data?.texts?.out_button_text}
+                    ? data?.texts?.button_text || "Call"
+                    : data?.texts?.out_button_text || "Call"}
                 </button>
               </div>
             </form>
