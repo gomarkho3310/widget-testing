@@ -26,7 +26,7 @@ function App({ wkey }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://3.29.188.19:8001/v1/pub/widgets/${wkey}`
+          `https://3.29.188.19:8001/v1/pub/widgets/${wkey}`
         );
         setLoading(false);
         setData(response.data.data);
@@ -91,7 +91,7 @@ function App({ wkey }) {
     const formData = new FormData(event.target);
     const formDataObject = Object.fromEntries(formData.entries());
     await axios.post(
-      "http://3.29.188.19:8002/v1/pub/call",
+      "https://3.29.188.19:8002/v1/pub/call",
       {
         name: formDataObject.name,
         phone_number: phone,
