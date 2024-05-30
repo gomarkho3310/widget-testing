@@ -121,6 +121,7 @@ function App({ wkey }) {
       padding: "0.75rem",
       border: "none",
       outline: "none",
+      zIndex: 1000,
     },
     wrapper: {
       backgroundImage: data?.design?.background_image
@@ -142,6 +143,7 @@ function App({ wkey }) {
       width: "23rem",
       height: "23rem",
       boxShadow: "0 4px 100px rgba(0, 0, 0, 0.1)",
+      zIndex: 1000,
     },
     wave_svg: {
       position: "absolute",
