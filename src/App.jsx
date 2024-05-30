@@ -37,6 +37,7 @@ function App({ wkey }) {
     };
     fetchData();
 
+
     axios
       .get("https://ipinfo.io/json/")
       .then((response) => {
