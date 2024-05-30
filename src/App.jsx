@@ -6,7 +6,6 @@ import "react-phone-input-2/lib/style.css";
 function App({ wkey }) {
   const [show, setShow] = useState(false);
   const [data, setData] = useState(null);
-  const [overlay, setOverlay] = useState(false);
   var phone = null;
   const [country_calling_code, setCountryCallingCode] = useState(null);
   const [loading, setLoading] = useState(true);
