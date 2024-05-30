@@ -2,18 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 
-const widgetKey = document
-  .querySelector("script[data-key]")
-  .getAttribute("data-key");
+// const widgetKey = document
+//   .querySelector("script[data-key]")
+//   .getAttribute("data-key");
 
-const topContainer = document.querySelector('div');
+const topContainer = document.body.children[0];
 
 const widgetRoot = document.createElement("div");
 topContainer.appendChild(widgetRoot);
 
 ReactDOM.createRoot(widgetRoot).render(
   <React.StrictMode>
-    <App wkey={widgetKey} />
+    <App wkey={"widgetKey"} />
   </React.StrictMode>
 );
 
