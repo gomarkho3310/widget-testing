@@ -37,7 +37,6 @@ function App({ wkey }) {
     };
     fetchData();
 
-
     axios
       .get("https://ipinfo.io/json/")
       .then((response) => {
@@ -88,22 +87,41 @@ function App({ wkey }) {
 
   // form submission
   const handleSubmit = async (event) => {
+    // event.preventDefault();
+    // const formData = new FormData(event.target);
+    // const formDataObject = Object.fromEntries(formData.entries());
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const formDataObject = Object.fromEntries(formData.entries());
-    await axios.post(
-      "https://app.spotcalls.com:8002/v1/pub/call",
-      {
-        name: formDataObject.name,
-        phone_number: phone,
-      },
-      {
-        headers: {
-          WIDGET_KEY: wkey,
-        },
-      }
-    );
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = {};
+    for (const [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+
+    console.log(data);
+
+    // await axios.post(
+    //   "https://app.spotcalls.com:8002/v1/pub/call",
+    //   {
+    //     name: formDataObject.name,
+    //     phone_number: phone,
+    //   },
+    //   {
+    //     headers: {
+    //       WIDGET_KEY: wkey,
+    //     },
+    //   }
+    // );
   };
+  var forms;
+  useEffect(() => {
+    forms = document.querySelectorAll("form");
+    forms.forEach((form) => {
+      form.addEventListener("submit", handleSubmit);
+    });
+  }, [show]);
+
+  console.log(forms);
 
   const styles = {
     main: {
@@ -238,7 +256,7 @@ function App({ wkey }) {
   };
 
   return (
-    <div style={styles.main}>
+    <div id="widget" style={styles.main}>
       {show && (
         <div id="widget-container" ref={formRef} style={styles.wrapper}>
           {data?.design?.logo && (
@@ -432,7 +450,7 @@ function App({ wkey }) {
               <form
                 id="widget-container-form"
                 style={styles.form}
-                onSubmit={handleSubmit}
+                // onSubmit={handleSubmit}
               >
                 <label style={styles.form_label} htmlFor="name">
                   Name{" "}
@@ -485,6 +503,7 @@ function App({ wkey }) {
                   /> */}
                   <PhoneInput
                     country={country_calling_code}
+                    countryCodeEditable={false}
                     inputProps={{
                       required: true,
                     }}
