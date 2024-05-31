@@ -6,10 +6,10 @@ import App from "./App.jsx";
 //   .querySelector("script[data-key]")
 //   .getAttribute("data-key");
 
-const topContainer = document.body.children[0];
+// const topContainer = document.body.children[0];
 
 const widgetRoot = document.createElement("div");
-topContainer.insertBefore(widgetRoot, topContainer.children[0]);
+document.body.appendChild(widgetRoot);
 
 ReactDOM.createRoot(widgetRoot).render(
   <React>
