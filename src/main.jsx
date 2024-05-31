@@ -12,9 +12,9 @@ const widgetRoot = document.createElement("div");
 document.body.appendChild(widgetRoot);
 
 ReactDOM.createRoot(widgetRoot).render(
-  <React>
+  <React.StrictMode>
     <App wkey={"widgetKey"} />
-  </React>
+  </React.StrictMode>
 );
 
 // const widgetDivs = document.querySelectorAll(".nicoraynaud-finance-widget");
