@@ -9,12 +9,12 @@ import App from "./App.jsx";
 const topContainer = document.body.children[0];
 
 const widgetRoot = document.createElement("div");
-topContainer.appendChild(widgetRoot);
+topContainer.insertBefore(widgetRoot, topContainer.children[0]);
 
 ReactDOM.createRoot(widgetRoot).render(
-  <React.StrictMode>
+  <React>
     <App wkey={"widgetKey"} />
-  </React.StrictMode>
+  </React>
 );
 
 // const widgetDivs = document.querySelectorAll(".nicoraynaud-finance-widget");
