@@ -6,10 +6,8 @@ const widgetKey = document
   .querySelector("script[data-key]")
   .getAttribute("data-key");
 
-const topContainer = document.body.children[0];
-
 const widgetRoot = document.createElement("div");
-topContainer.appendChild(widgetRoot);
+document.body.appendChild(widgetRoot);
 
 ReactDOM.createRoot(widgetRoot).render(
   <React.StrictMode>

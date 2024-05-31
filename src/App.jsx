@@ -90,18 +90,26 @@ function App({ wkey }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formDataObject = Object.fromEntries(formData.entries());
-    await axios.post(
-      "https://app.spotcalls.com:8002/v1/pub/call",
-      {
-        name: formDataObject.name,
-        phone_number: "+" + phone,
-      },
-      {
-        headers: {
-          WIDGET_KEY: wkey,
+    await axios
+      .post(
+        "https://app.spotcalls.com:8002/v1/pub/call",
+        {
+          name: formDataObject.name,
+          phone_number: "+" + phone,
         },
-      }
-    );
+        {
+          headers: {
+            WIDGET_KEY: wkey,
+          },
+        }
+      )
+      .then((response) => {
+        document.getElementById("success_p").innerHTML =
+          "Successfully submitted";
+        setTimeout(() => {
+          document.getElementById("success_p").innerHTML = "";
+        }, 2000);
+      });
   };
 
   const styles = {
@@ -158,7 +166,7 @@ function App({ wkey }) {
     wave_svg: {
       position: "absolute",
       bottom: "23%",
-      left: -0.8,
+      left: 0,
     },
     upperSection: {
       display: "flex",
@@ -251,6 +259,21 @@ function App({ wkey }) {
       {show && (
         <div style={styles.blackOverlay}>
           <div id="widget-container" ref={formRef} style={styles.wrapper}>
+            <button
+              onClick={() => setShow(false)}
+              style={{
+                position: "absolute",
+                top: "3%",
+                right: "3%",
+                cursor: "pointer",
+                color: "white",
+                fontSize: "0.8rem",
+                backgroundColor: "transparent",
+                border: "none",
+              }}
+            >
+              ✕
+            </button>
             {data?.design?.logo && (
               <img
                 src={data?.design?.logo}
@@ -539,6 +562,19 @@ function App({ wkey }) {
                 d="M0,64L30,74.7C60,85,120,107,180,138.7C240,171,300,213,360,240C420,267,480,277,540,277.3C600,277,660,267,720,256C780,245,840,235,900,202.7C960,171,1020,117,1080,117.3C1140,117,1200,171,1260,208C1320,245,1380,267,1410,277.3L1440,288L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
               ></path>
             </svg>
+            <p
+              id="success_p"
+              style={{
+                position: "absolute",
+                bottom: "0",
+                left: "50%",
+                transform: "translateX(-50%)",
+                color: "green",
+                fontSize: "0.6rem",
+                opacity: 0.5,
+                fontWeight: "bold",
+              }}
+            ></p>
           </div>
         </div>
       )}
