@@ -118,7 +118,7 @@ function App({ wkey }) {
       borderRadius: "4px",
       height: "5rem",
       width: "5rem",
-      backgroundColor: data?.design?.widget_button_color || "green",
+      backgroundColor: data?.design?.widget_button_color || "blue",
       padding: "0.75rem",
       border: "none",
       outline: "none",
