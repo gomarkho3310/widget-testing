@@ -4,12 +4,12 @@ import react from "@vitejs/plugin-react";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: `assets/widgetJs.js`,
-        assetFileNames: `assets/widgetCss.[ext]`,
-      },
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     output: {
+  //       entryFileNames: `assets/widgetJs.js`,
+  //       assetFileNames: `assets/widgetCss.[ext]`,
+  //     },
+  //   },
+  // },
 });
