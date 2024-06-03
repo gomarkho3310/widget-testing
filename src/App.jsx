@@ -95,7 +95,11 @@ function App({ wkey }) {
     const formData = new FormData(form);
     const data = {};
     for (const [key, value] of formData.entries()) {
-      data[key] = value;
+      if (key === "name" || key === "phone") {
+        data[key] = value;
+      } else {
+        data.metadata[key] = value;
+      }
     }
 
     console.log(data);
