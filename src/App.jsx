@@ -103,7 +103,7 @@ function App({ wkey }) {
       sendData.metadata[key] = value;
     }
 
-    console.log(data);
+    console.log(sendData);
 
     // await axios.post(
     //   "https://app.spotcalls.com:8002/v1/pub/call",
