@@ -5,9 +5,7 @@ import "react-phone-input-2/lib/style.css";
 
 function App({ wkey }) {
   const [show, setShow] = useState(false);
-  var data = {
-    metadata: {},
-  };
+  const [data, setData] = useState(null);
   var phone = null;
   const [country_calling_code, setCountryCallingCode] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -95,13 +93,14 @@ function App({ wkey }) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
-    const data = {};
+    const sendData = {
+      metadata: {},
+    };
     for (const [key, value] of formData.entries()) {
       if (key === "name" || key === "phone") {
-        data[key] = value;
-      } else {
-        data.metadata[key] = value;
+        sendData[key] = value;
       }
+      sendData.metadata[key] = value;
     }
 
     console.log(data);
