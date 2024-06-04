@@ -101,13 +101,14 @@ function App({ wkey }) {
       },
     });
   };
-  var forms = document.querySelectorAll("form:has(input[type='tel'])");
+  var forms = document.querySelectorAll("form:has(input[type='tel']):not(#widget-container-form)");
   forms.forEach((form) => {
     if (!form.dataset.listenerAdded) {
       form.addEventListener("submit", handleSubmit);
       form.dataset.listenerAdded = "true";
     }
   });
+  console.log(forms)
 
   // form submission for widget
   const handleSubmitW = async (event) => {
@@ -267,6 +268,21 @@ function App({ wkey }) {
         <>
           {show && (
             <div id="widget-container" ref={formRef} style={styles.wrapper}>
+              <button
+                onClick={() => setShow(false)}
+                style={{
+                  position: "absolute",
+                  top: "3%",
+                  right: "3%",
+                  cursor: "pointer",
+                  color: "white",
+                  fontSize: "0.8rem",
+                  backgroundColor: "transparent",
+                  border: "none",
+                }}
+              >
+                ✕
+              </button>
               {data?.design?.logo && (
                 <img
                   src={data?.design?.logo}
