@@ -90,7 +90,7 @@ function App({ wkey }) {
       metadata: {},
     };
     for (const [key, value] of formData.entries()) {
-      if (key === "name" || key === "phone") {
+      if (key === "name" || key === "phone_number") {
         sendData[key] = value;
       }
       sendData.metadata[key] = value;
@@ -108,7 +108,6 @@ function App({ wkey }) {
       form.dataset.listenerAdded = "true";
     }
   });
-  console.log(forms)
 
   // form submission for widget
   const handleSubmitW = async (event) => {
