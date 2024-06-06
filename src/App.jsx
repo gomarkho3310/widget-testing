@@ -87,13 +87,13 @@ function App({ wkey }) {
     const form = event.target;
     const formData = new FormData(form);
     const sendData = {
-      metadata: {},
+      data_fields: {},
     };
     for (const [key, value] of formData.entries()) {
       if (key === "name" || key === "phone_number") {
         sendData[key] = value;
       }
-      sendData.metadata[key] = value;
+      sendData.data_fields[key] = value;
     }
     await axios.post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
       headers: {
@@ -101,7 +101,9 @@ function App({ wkey }) {
       },
     });
   };
-  var forms = document.querySelectorAll("form:has(input[type='tel']):not(#widget-container-form)");
+  var forms = document.querySelectorAll(
+    "form:has(input[type='tel']):not(#widget-container-form)"
+  );
   forms.forEach((form) => {
     if (!form.dataset.listenerAdded) {
       form.addEventListener("submit", handleSubmit);
