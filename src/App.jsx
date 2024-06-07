@@ -104,7 +104,6 @@ function App({ wkey }) {
       }
       sendData.data_fields[key] = value;
     }
-    console.log(sendData);
     await axios.post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
       headers: {
         WIDGET_KEY: wkey,

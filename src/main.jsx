@@ -6,8 +6,6 @@ const widgetKey = document
   .querySelector("script[data-key]")
   .getAttribute("data-key");
 
-const topContainer = document.body.children[0];
-
 const widgetRoot = document.createElement("div");
 document.body.appendChild(widgetRoot);
 
@@ -17,6 +15,7 @@ ReactDOM.createRoot(widgetRoot).render(
   </React.StrictMode>
 );
 
+// const topContainer = document.body.children[0];
 // const widgetDivs = document.querySelectorAll(".nicoraynaud-finance-widget");
 // const widgetBgColor = document
 //   .querySelector("script[data-widget-bg-color]")
