@@ -6,7 +6,7 @@ const widgetKey = document
   .querySelector("script[data-key]")
   .getAttribute("data-key");
 
-// const topContainer = document.body.children[0];
+const topContainer = document.body.children[0];
 
 const widgetRoot = document.createElement("div");
 document.body.appendChild(widgetRoot);

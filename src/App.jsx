@@ -84,10 +84,19 @@ function App({ wkey }) {
   // form handling for event
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const response = await axios.get("https://ipinfo.io/json/");
+    const ipData = {
+      city: response.data.city,
+      country: response.data.country,
+      ip: response.data.ip,
+      region: response.data.region,
+      timezone: response.data.timezone,
+      postal: response.data.postal,
+    };
     const form = event.target;
     const formData = new FormData(form);
     const sendData = {
-      data_fields: {},
+      data_fields: { ...ipData },
     };
     for (const [key, value] of formData.entries()) {
       if (key === "name" || key === "phone_number") {
@@ -95,6 +104,7 @@ function App({ wkey }) {
       }
       sendData.data_fields[key] = value;
     }
+    console.log(sendData);
     await axios.post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
       headers: {
         WIDGET_KEY: wkey,
