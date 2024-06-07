@@ -123,6 +123,7 @@ function App({ wkey }) {
   // form submission for widget
   const handleSubmitW = async (event) => {
     event.preventDefault();
+    setShow(false)
     const formData = new FormData(event.target);
     const formDataObject = Object.fromEntries(formData.entries());
     await axios
