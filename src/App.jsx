@@ -39,7 +39,6 @@ function App({ wkey }) {
         "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
       )
       .then((response) => {
-        console.log(response);
         setCountryCallingCode(response.data.country_code2.toLowerCase());
       })
       .catch((error) => {
