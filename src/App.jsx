@@ -35,9 +35,11 @@ function App({ wkey }) {
 
     // fetch country code
     axios
-      .get("https://ipinfo.io/json/")
+      .get(
+        "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
+      )
       .then((response) => {
-        setCountryCallingCode(response.data.country.toLowerCase());
+        setCountryCallingCode(response.data.country_code2.toLowerCase());
       })
       .catch((error) => {
         setCountryCallingCode("ae");
@@ -82,16 +84,18 @@ function App({ wkey }) {
   );
 
   // form handling for event
-  const handleSubmit = async (event) => {
+  const handleSubmitSpotCall = async (event) => {
     event.preventDefault();
-    const response = await axios.get("https://ipinfo.io/json/");
+    const response = await axios.get(
+      "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
+    );
     const ipData = {
-      city: response.data.city,
-      country: response.data.country,
-      ip: response.data.ip,
-      region: response.data.region,
-      timezone: response.data.timezone,
-      postal: response.data.postal,
+      city: response?.data?.city,
+      country: response?.data?.country_name,
+      ip: response?.data?.ip,
+      calling_code: response?.data?.calling_code,
+      timezone: response?.data?.time_zone?.name,
+      currency: response?.data?.currency?.code,
     };
     const form = event.target;
     const formData = new FormData(form);
@@ -109,13 +113,23 @@ function App({ wkey }) {
         WIDGET_KEY: wkey,
       },
     });
+    const hiddenDiv = document.querySelector(".js-successbox");
+    if (hiddenDiv) {
+      hiddenDiv.style.display = "";
+      const dataText =
+        hiddenDiv.getAttribute("data-success-message") ||
+        "Thank you! Your data has been submitted.";
+      hiddenDiv.textContent = dataText;
+    }
+    form.reset();
   };
   var forms = document.querySelectorAll(
     "form:has(input[type='tel']):not(#widget-container-form)"
   );
   forms.forEach((form) => {
+    form.classList.remove("js-form-proccess");
     if (!form.dataset.listenerAdded) {
-      form.addEventListener("submit", handleSubmit);
+      form.addEventListener("submit", handleSubmitSpotCall);
       form.dataset.listenerAdded = "true";
     }
   });
@@ -124,21 +138,33 @@ function App({ wkey }) {
   const handleSubmitW = async (event) => {
     event.preventDefault();
     setShow(false)
+    const response = await axios.get(
+      "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
+    );
+    const ipData = {
+      city: response.data.city,
+      country: response.data.country_name,
+      ip: response.data.ip,
+      calling_code: response.data.calling_code,
+      timezone: response.data.timezone.name,
+      currency: response.data.currency.code,
+    };
     const formData = new FormData(event.target);
-    const formDataObject = Object.fromEntries(formData.entries());
+    const sendData = {
+      data_fields: { ...ipData },
+    };
+    for (const [key, value] of formData.entries()) {
+      if (key === "name" || key === "phone_number") {
+        sendData[key] = value;
+      }
+      sendData.data_fields[key] = value;
+    }
     await axios
-      .post(
-        "https://app.spotcalls.com:8002/v1/pub/call",
-        {
-          name: formDataObject.name,
-          phone_number: "+" + phone,
+      .post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
+        headers: {
+          WIDGET_KEY: wkey,
         },
-        {
-          headers: {
-            WIDGET_KEY: wkey,
-          },
-        }
-      )
+      })
       .then((response) => {
         document.getElementById("success_p").innerHTML =
           "Successfully submitted";
