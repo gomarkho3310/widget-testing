@@ -135,7 +135,7 @@ function App({ wkey }) {
   // form submission for widget
   const handleSubmitW = async (event) => {
     event.preventDefault();
-    setShow(false)
+    setShow(false);
     const response = await axios.get(
       "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
     );
@@ -156,11 +156,15 @@ function App({ wkey }) {
       sendData.data_fields[key] = value;
     }
     await axios
-      .post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
-        headers: {
-          WIDGET_KEY: wkey,
-        },
-      })
+      .post(
+        "https://app.spotcalls.com:8002/v1/pub/call",
+        { ...sendData, phone_number: phone },
+        {
+          headers: {
+            WIDGET_KEY: wkey,
+          },
+        }
+      )
       .then((response) => {
         document.getElementById("success_p").innerHTML =
           "Successfully submitted";
