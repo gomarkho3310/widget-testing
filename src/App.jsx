@@ -91,12 +91,12 @@ function App({ wkey }) {
       "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
     );
     const ipData = {
-      city: response.data.city,
-      country: response.data.country_name,
-      ip: response.data.ip,
-      calling_code: response.data.calling_code,
-      timezone: response.data.timezone.name,
-      currency: response.data.currency.code,
+      city: response?.data?.city,
+      country: response?.data?.country_name,
+      ip: response?.data?.ip,
+      calling_code: response?.data?.calling_code,
+      timezone: response?.data?.time_zone?.name,
+      currency: response?.data?.currency?.code,
     };
     const form = event.target;
     const formData = new FormData(form);
