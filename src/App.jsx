@@ -82,7 +82,7 @@ function App({ wkey }) {
   );
 
   // form handling for event
-  const handleSubmit = async (event) => {
+  const handleSubmitSpotCall = async (event) => {
     event.preventDefault();
     const response = await axios.get("https://ipinfo.io/json/");
     const ipData = {
@@ -109,13 +109,23 @@ function App({ wkey }) {
         WIDGET_KEY: wkey,
       },
     });
+    const hiddenDiv = document.querySelector(".js-successbox");
+    if (hiddenDiv) {
+      hiddenDiv.style.display = "";
+      const dataText =
+        hiddenDiv.getAttribute("data-success-message") ||
+        "Thank you! Your data has been submitted.";
+      hiddenDiv.textContent = dataText;
+    }
+    form.reset();
   };
   var forms = document.querySelectorAll(
     "form:has(input[type='tel']):not(#widget-container-form)"
   );
   forms.forEach((form) => {
+    form.classList.remove("js-form-proccess");
     if (!form.dataset.listenerAdded) {
-      form.addEventListener("submit", handleSubmit);
+      form.addEventListener("submit", handleSubmitSpotCall);
       form.dataset.listenerAdded = "true";
     }
   });
