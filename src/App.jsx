@@ -177,7 +177,7 @@ function App({ wkey }) {
   // styles for widget
   const styles = {
     main: {
-      position: "relative",
+      position: "absolute",
       zIndex: 50,
       fontFamily: data?.design?.font_family || "helvetica",
       height: "100vh",
