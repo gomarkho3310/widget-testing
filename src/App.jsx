@@ -130,6 +130,10 @@ function App({ wkey }) {
       form.addEventListener("submit", handleSubmitSpotCall);
       form.dataset.listenerAdded = "true";
     }
+    var telInputs = form.querySelectorAll("input[type='tel']");
+    telInputs.forEach((input) => {
+      input.setAttribute("pattern", "[0-9+]*");
+    });
   });
 
   // form submission for widget
