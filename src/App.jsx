@@ -10,7 +10,6 @@ function App({ wkey }) {
   const formRef = useRef(null);
   var phone = null;
 
-  // use effect
   useEffect(() => {
     // handle click outside
     function handleClickOutside(event) {
@@ -47,41 +46,6 @@ function App({ wkey }) {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  // working hours check
-  function isInWorkingHours(workingHours, currentTime) {
-    const currentDay = currentTime.toLocaleDateString("en-US", {
-      weekday: "long",
-    });
-    const currentHour = currentTime.getHours();
-    const currentMinute = currentTime.getMinutes();
-    const todaysWorkingHours = workingHours?.find(
-      (day) => day.day === currentDay
-    );
-    if (todaysWorkingHours) {
-      const startTime = new Date(todaysWorkingHours.start_time).getUTCHours();
-      const startMinute = new Date(
-        todaysWorkingHours.start_time
-      ).getUTCMinutes();
-
-      const endTime = new Date(todaysWorkingHours.end_time).getUTCHours();
-      const endMinute = new Date(todaysWorkingHours.end_time).getUTCMinutes();
-
-      if (
-        (currentHour > startTime ||
-          (currentHour === startTime && currentMinute >= startMinute)) &&
-        (currentHour < endTime ||
-          (currentHour === endTime && currentMinute <= endMinute))
-      )
-        return true;
-    }
-    return false;
-  }
-  const currentTime = new Date();
-  const working = isInWorkingHours(
-    data?.call_routing?.working_hours,
-    currentTime
-  );
 
   // form handling for event
   const handleSubmitSpotCall = async (event) => {
@@ -125,15 +89,15 @@ function App({ wkey }) {
     "form:has(input[type='tel']):not(#widget-container-form)"
   );
   forms.forEach((form) => {
-    form.classList.remove("js-form-proccess");
+    // form.classList.remove("js-form-proccess");
     if (!form.dataset.listenerAdded) {
       form.addEventListener("submit", handleSubmitSpotCall);
       form.dataset.listenerAdded = "true";
     }
-    var telInputs = form.querySelectorAll("input[type='tel']");
-    telInputs.forEach((input) => {
-      input.setAttribute("pattern", "[0-9+]*");
-    });
+    // var telInputs = form.querySelectorAll("input[type='tel']");
+    // telInputs.forEach((input) => {
+    //   input.setAttribute("pattern", "[0-9+]*");
+    // });
   });
 
   // form submission for widget
@@ -177,6 +141,41 @@ function App({ wkey }) {
         }, 2000);
       });
   };
+
+  // working hours check
+  function isInWorkingHours(workingHours, currentTime) {
+    const currentDay = currentTime.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+    const todaysWorkingHours = workingHours?.find(
+      (day) => day.day === currentDay
+    );
+    if (todaysWorkingHours) {
+      const startTime = new Date(todaysWorkingHours.start_time).getUTCHours();
+      const startMinute = new Date(
+        todaysWorkingHours.start_time
+      ).getUTCMinutes();
+
+      const endTime = new Date(todaysWorkingHours.end_time).getUTCHours();
+      const endMinute = new Date(todaysWorkingHours.end_time).getUTCMinutes();
+
+      if (
+        (currentHour > startTime ||
+          (currentHour === startTime && currentMinute >= startMinute)) &&
+        (currentHour < endTime ||
+          (currentHour === endTime && currentMinute <= endMinute))
+      )
+        return true;
+    }
+    return false;
+  }
+  const currentTime = new Date();
+  const working = isInWorkingHours(
+    data?.call_routing?.working_hours,
+    currentTime
+  );
 
   // styles for widget
   const styles = {
