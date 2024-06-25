@@ -94,17 +94,10 @@ function App({ wkey }) {
       form.addEventListener("submit", handleSubmitSpotCall);
       form.dataset.listenerAdded = "true";
     }
-<<<<<<< HEAD
     // var telInputs = form.querySelectorAll("input[type='tel']");
     // telInputs.forEach((input) => {
     //   input.setAttribute("pattern", "[0-9+]*");
     // });
-=======
-    var telInputs = form.querySelectorAll("input[type='tel']");
-    telInputs.forEach((input) => {
-      input.setAttribute("pattern", "[0-9+]*");
-    });
->>>>>>> 8b8dc8e5704a09d504f94c4313bb66d4115d63e6
   });
 
   // form submission for widget
