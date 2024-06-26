@@ -32,18 +32,6 @@ function App({ wkey }) {
     };
     fetchData();
 
-    // fetch country code
-    axios
-      .get(
-        "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
-      )
-      .then((response) => {
-        setCountryCallingCode(response.data.country_code2.toLowerCase());
-      })
-      .catch((error) => {
-        setCountryCallingCode("ae");
-      });
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -88,17 +76,57 @@ function App({ wkey }) {
   var forms = document.querySelectorAll(
     "form:has(input[type='tel']):not(#widget-container-form)"
   );
-  forms.forEach((form) => {
-    // form.classList.remove("js-form-proccess");
-    if (!form.dataset.listenerAdded) {
-      form.addEventListener("submit", handleSubmitSpotCall);
-      form.dataset.listenerAdded = "true";
-    }
-    var telInputs = form.querySelectorAll("input[type='tel']");
-    telInputs.forEach((input) => {
-      // input.setAttribute("pattern", "[0-9+]*");
-    });
-  });
+  // forms.forEach((form) => {
+  //   // form.classList.remove("js-form-proccess");
+  //   if (!form.dataset.listenerAdded) {
+  //     form.addEventListener("submit", handleSubmitSpotCall);
+  //     form.dataset.listenerAdded = "true";
+  //   }
+  //   var telInputs = form.querySelectorAll("input[type='tel']");
+  //   telInputs.forEach((input) => {
+  //     // input.setAttribute("pattern", "[0-9+]*");
+  //   });
+  // });
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    const handleFormSubmit = async (e) => {
+      e.preventDefault();
+      let form = e.target;
+      if (form.tagName === "FORM") {
+        const formData = new FormData(form);
+        const sendData = {
+          data_fields: {},
+        };
+        for (const [key, value] of formData.entries()) {
+          if (key === "name" || key === "phone_number") {
+            sendData[key] = value;
+          }
+          sendData.data_fields[key] = value;
+        }
+        try {
+          await axios.post(
+            "https://app.spotcalls.com:8002/v1/pub/call",
+            sendData,
+            {
+              headers: {
+                WIDGET_KEY: wkey,
+              },
+            }
+          );
+          console.log("Form data sent successfully.");
+        } catch (error) {
+          console.error("Error submitting form:", error);
+        }
+      }
+    };
+
+    document.addEventListener("submit", handleFormSubmit);
+    return () => {
+      document.removeEventListener("submit", handleFormSubmit);
+    };
+  }, []);
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   // form submission for widget
   const handleSubmitW = async (event) => {
