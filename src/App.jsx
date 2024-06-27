@@ -58,6 +58,7 @@ function App({ wkey }) {
       country: response?.data?.country_name,
       ip: response?.data?.ip,
       timezone: response?.data?.time_zone?.name,
+      callingCode: response?.data?.calling_code,
     };
     const form = event.target;
     const formData = new FormData(form);
@@ -112,6 +113,7 @@ function App({ wkey }) {
       country: response?.data?.country_name,
       ip: response?.data?.ip,
       timezone: response?.data?.time_zone?.name,
+      callingCode: response?.data?.calling_code,
     };
     const formData = new FormData(event.target);
     const sendData = {
