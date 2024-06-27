@@ -84,20 +84,23 @@ function App({ wkey }) {
         "Thank you! Your data has been submitted.";
       hiddenDiv.textContent = dataText;
     }
-    form.reset();
+    // form.reset();
+    form.classList.add("js-form-proccess");
+    form.removeEventListener("submit", handleSubmitSpotCall);
+    form.submit();
   };
   var forms = document.querySelectorAll(
     "form:has(input[type='tel']):not(#widget-container-form)"
   );
   forms.forEach((form) => {
-    // form.classList.remove("js-form-proccess");
+    form.classList.remove("js-form-proccess");
     if (!form.dataset.listenerAdded) {
       form.addEventListener("submit", handleSubmitSpotCall);
       form.dataset.listenerAdded = "true";
     }
     var telInputs = form.querySelectorAll("input[type='tel']");
     telInputs.forEach((input) => {
-      // input.setAttribute("pattern", "[0-9+]*");
+      input.setAttribute("pattern", "[0-9+]*");
     });
   });
 
