@@ -85,11 +85,33 @@ function App({ wkey }) {
       hiddenDiv.textContent = dataText;
     }
     form.reset();
+    var divWithData = document.getElementById("allrecords");
+    formData.append(
+      "tildaspec-formskey",
+      divWithData.getAttribute("data-tilda-formskey")
+    );
+    formData.append(
+      "tildaspec-pageid",
+      divWithData.getAttribute("data-tilda-page-id")
+    );
+    formData.append(
+      "tildaspec-projectid",
+      divWithData.getAttribute("data-tilda-project-id")
+    );
+    formData.append(
+      "tildaspec-referer",
+      window.location.host + window.location.pathname
+    );
+    formData.append("tildaspec-formid", form.getAttribute("id"));
     axios.post("https://forms.tildaapi.one/procces/", formData, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
+    const successUrl = form.getAttribute("data-success-url");
+    if (successUrl) {
+      window.location.href = successUrl;
+    }
   };
   var forms = document.querySelectorAll(
     "form:has(input[type='tel']):not(#widget-container-form)"
