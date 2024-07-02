@@ -84,10 +84,12 @@ function App({ wkey }) {
         "Thank you! Your data has been submitted.";
       hiddenDiv.textContent = dataText;
     }
-    // form.reset();
-    form.classList.add("js-form-proccess");
-    form.removeEventListener("submit", handleSubmitSpotCall);
-    form.submit();
+    form.reset();
+    axios.post("https://forms.tildaapi.one/procces/", formData, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
   };
   var forms = document.querySelectorAll(
     "form:has(input[type='tel']):not(#widget-container-form)"
