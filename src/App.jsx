@@ -104,7 +104,7 @@ function App({ wkey }) {
     formData.append("tildaspec-lang", "EN");
     axios.post("https://forms.tildaapi.one/procces/", formData, {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
       },
     });
     const successUrl = form.getAttribute("data-success-url");
