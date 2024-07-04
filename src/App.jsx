@@ -86,6 +86,10 @@ function App({ wkey }) {
     }
     form.reset();
     var divWithData = document.getElementById("allrecords");
+    formData.append(
+      "tildaspec-cookie",
+      "_gcl_au=1.1.86524958.1716203505; _scid=da289620-87c7-4256-b435-acd6b7694b62; _scid_r=da289620-87c7-4256-b435-acd6b7694b62; _ga=GA1.1.627159857.1716203504; _tt_enable_cookie=1; _ttp=rB7QoGg18XXH33uxPDw-PWE3D7C; _sctr=1%7C1716145200000; _ga_T0CYDDRMBE=GS1.1.1716203504.1.1.1716203522.0.0.0; _ga_JQ0HMSFX7M=GS1.1.1716203505.1.1.1716203522.43.0.0; _ga_J4NY4VZ2MW=GS1.1.1716203505.1.1.1716203522.0.0.0; tildauid=1718018958072.646148; tildasid=1720078268804.866300; previousUrl=landings.propertyforall.ae%2Ftest212"
+    );
     formData.append("tildaspec-referer", window.location.href);
     formData.append("tildaspec-formid", form.getAttribute("id"));
     formData.append(
