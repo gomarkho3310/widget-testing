@@ -96,6 +96,7 @@ function App({ wkey }) {
       "tildaspec-formskey",
       divWithData.getAttribute("data-tilda-formskey")
     );
+    formData.append("tildaspec-version-lib", "02.001");
     formData.append(
       "tildaspec-pageid",
       divWithData.getAttribute("data-tilda-page-id")
@@ -104,6 +105,7 @@ function App({ wkey }) {
       "tildaspec-projectid",
       divWithData.getAttribute("data-tilda-project-id")
     );
+    formData.append("tildaspec-lang", "EN");
     formData.append(
       "tildaspec-fp",
       "6354646d686331326c656e2d55532c656e7057696e333276476f6f676c6520496e632e614d6f7a696c6c616e4e65747363617065706c696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d7669657765727072302e38393939393939373631353831343231773230383068353536"
