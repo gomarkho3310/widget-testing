@@ -86,10 +86,6 @@ function App({ wkey }) {
     }
     form.reset();
     var divWithData = document.getElementById("allrecords");
-    formData.append(
-      "tildaspec-cookie",
-      "_gcl_au=1.1.86524958.1716203505; _scid=da289620-87c7-4256-b435-acd6b7694b62; _scid_r=da289620-87c7-4256-b435-acd6b7694b62; _ga=GA1.1.627159857.1716203504; _tt_enable_cookie=1; _ttp=rB7QoGg18XXH33uxPDw-PWE3D7C; _sctr=1%7C1716145200000; _ga_T0CYDDRMBE=GS1.1.1716203504.1.1.1716203522.0.0.0; _ga_JQ0HMSFX7M=GS1.1.1716203505.1.1.1716203522.43.0.0; _ga_J4NY4VZ2MW=GS1.1.1716203505.1.1.1716203522.0.0.0; tildauid=1718018958072.646148; tildasid=1720078268804.866300; previousUrl=landings.propertyforall.ae%2Ftest212"
-    );
     formData.append("tildaspec-referer", window.location.href);
     formData.append("tildaspec-formid", form.getAttribute("id"));
     formData.append(
@@ -106,10 +102,6 @@ function App({ wkey }) {
       divWithData.getAttribute("data-tilda-project-id")
     );
     formData.append("tildaspec-lang", "EN");
-    formData.append(
-      "tildaspec-fp",
-      "6354646d686331326c656e2d55532c656e7057696e333276476f6f676c6520496e632e614d6f7a696c6c616e4e65747363617065706c696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d766965776572696e7465726e616c2d7064662d7669657765727072302e38393939393939373631353831343231773230383068353536"
-    );
     axios.post("https://forms.tildaapi.one/procces/", formData, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
