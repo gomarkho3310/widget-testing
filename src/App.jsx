@@ -58,7 +58,7 @@ function App({ wkey }) {
       country: response?.data?.country_name,
       ip: response?.data?.ip,
       timezone: response?.data?.time_zone?.name,
-      callingCode: response?.data?.calling_code,
+      calling_code: response?.data?.calling_code,
     };
     const form = event.target;
     const formData = new FormData(form);
@@ -86,6 +86,8 @@ function App({ wkey }) {
     }
     form.reset();
     var divWithData = document.getElementById("allrecords");
+    formData.append("tildaspec-referer", window.location.href);
+    formData.append("tildaspec-formid", form.getAttribute("id"));
     formData.append(
       "tildaspec-formskey",
       divWithData.getAttribute("data-tilda-formskey")
@@ -98,11 +100,6 @@ function App({ wkey }) {
       "tildaspec-projectid",
       divWithData.getAttribute("data-tilda-project-id")
     );
-    formData.append(
-      "tildaspec-referer",
-      window.location.host + window.location.pathname
-    );
-    formData.append("tildaspec-formid", form.getAttribute("id"));
     axios.post("https://forms.tildaapi.one/procces/", formData, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -140,7 +137,7 @@ function App({ wkey }) {
       country: response?.data?.country_name,
       ip: response?.data?.ip,
       timezone: response?.data?.time_zone?.name,
-      callingCode: response?.data?.calling_code,
+      calling_code: response?.data?.calling_code,
     };
     const formData = new FormData(event.target);
     const sendData = {
