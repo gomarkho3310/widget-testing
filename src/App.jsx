@@ -10,7 +10,6 @@ function App({ wkey }) {
   const formRef = useRef(null);
   var phone = null;
 
-  // use effect
   useEffect(() => {
     // handle click outside
     function handleClickOutside(event) {
@@ -48,6 +47,130 @@ function App({ wkey }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // form handling for event
+  const handleSubmitSpotCall = async (event) => {
+    event.preventDefault();
+    const response = await axios.get(
+      "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
+    );
+    const ipData = {
+      city: response?.data?.city,
+      country: response?.data?.country_name,
+      ip: response?.data?.ip,
+      timezone: response?.data?.time_zone?.name,
+      calling_code: response?.data?.calling_code,
+    };
+    const form = event.target;
+    const formData = new FormData(form);
+    const sendData = {
+      data_fields: { ...ipData },
+    };
+    for (const [key, value] of formData.entries()) {
+      if (key === "name" || key === "phone_number") {
+        sendData[key] = value;
+      }
+      sendData.data_fields[key] = value;
+    }
+    await axios.post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
+      headers: {
+        WIDGET_KEY: wkey,
+      },
+    });
+    const hiddenDiv = document.querySelector(".js-successbox");
+    if (hiddenDiv) {
+      hiddenDiv.style.display = "";
+      const dataText =
+        hiddenDiv.getAttribute("data-success-message") ||
+        "Thank you! Your data has been submitted.";
+      hiddenDiv.textContent = dataText;
+    }
+    form.reset();
+    var divWithData = document.getElementById("allrecords");
+    formData.append(
+      "tildaspec-formskey",
+      divWithData.getAttribute("data-tilda-formskey")
+    );
+    formData.append(
+      "tildaspec-pageid",
+      divWithData.getAttribute("data-tilda-page-id")
+    );
+    formData.append(
+      "tildaspec-projectid",
+      divWithData.getAttribute("data-tilda-project-id")
+    );
+    formData.append(
+      "tildaspec-referer",
+      window.location.host + window.location.pathname
+    );
+    formData.append("tildaspec-formid", form.getAttribute("id"));
+    axios.post("https://forms.tildaapi.one/procces/", formData, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    const successUrl = form.getAttribute("data-success-url");
+    if (successUrl) {
+      window.location.href = successUrl;
+    }
+  };
+  var forms = document.querySelectorAll(
+    "form:has(input[type='tel']):not(#widget-container-form)"
+  );
+  forms.forEach((form) => {
+    form.classList.remove("js-form-proccess");
+    if (!form.dataset.listenerAdded) {
+      form.addEventListener("submit", handleSubmitSpotCall);
+      form.dataset.listenerAdded = "true";
+    }
+    var telInputs = form.querySelectorAll("input[type='tel']");
+    telInputs.forEach((input) => {
+      input.setAttribute("pattern", "[0-9+]*");
+    });
+  });
+
+  // form submission for widget
+  const handleSubmitW = async (event) => {
+    event.preventDefault();
+    setShow(false);
+    const response = await axios.get(
+      "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
+    );
+    const ipData = {
+      city: response?.data?.city,
+      country: response?.data?.country_name,
+      ip: response?.data?.ip,
+      timezone: response?.data?.time_zone?.name,
+      calling_code: response?.data?.calling_code,
+    };
+    const formData = new FormData(event.target);
+    const sendData = {
+      data_fields: { ...ipData },
+    };
+    for (const [key, value] of formData.entries()) {
+      if (key === "name" || key === "phone_number") {
+        sendData[key] = value;
+      }
+      sendData.data_fields[key] = value;
+    }
+    await axios
+      .post(
+        "https://app.spotcalls.com:8002/v1/pub/call",
+        { ...sendData, phone_number: phone },
+        {
+          headers: {
+            WIDGET_KEY: wkey,
+          },
+        }
+      )
+      .then((response) => {
+        document.getElementById("success_p").innerHTML =
+          "Successfully submitted";
+        setTimeout(() => {
+          document.getElementById("success_p").innerHTML = "";
+        }, 2000);
+      });
+  };
+
   // working hours check
   function isInWorkingHours(workingHours, currentTime) {
     const currentDay = currentTime.toLocaleDateString("en-US", {
@@ -83,103 +206,6 @@ function App({ wkey }) {
     currentTime
   );
 
-  // form handling for event
-  const handleSubmitSpotCall = async (event) => {
-    event.preventDefault();
-    const response = await axios.get(
-      "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
-    );
-    const ipData = {
-      city: response?.data?.city,
-      country: response?.data?.country_name,
-      ip: response?.data?.ip,
-      timezone: response?.data?.time_zone?.name,
-      callingCode: response?.data?.calling_code,
-    };
-    const form = event.target;
-    const formData = new FormData(form);
-    const sendData = {
-      data_fields: { ...ipData },
-    };
-    for (const [key, value] of formData.entries()) {
-      if (key === "name" || key === "phone_number") {
-        sendData[key] = value;
-      }
-      sendData.data_fields[key] = value;
-    }
-    await axios.post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
-      headers: {
-        WIDGET_KEY: wkey,
-      },
-    });
-    const hiddenDiv = document.querySelector(".js-successbox");
-    if (hiddenDiv) {
-      hiddenDiv.style.display = "";
-      const dataText =
-        hiddenDiv.getAttribute("data-success-message") ||
-        "Thank you! Your data has been submitted.";
-      hiddenDiv.textContent = dataText;
-    }
-    form.reset();
-  };
-  var forms = document.querySelectorAll(
-    "form:has(input[type='tel']):not(#widget-container-form)"
-  );
-  forms.forEach((form) => {
-    form.classList.remove("js-form-proccess");
-    if (!form.dataset.listenerAdded) {
-      form.addEventListener("submit", handleSubmitSpotCall);
-      form.dataset.listenerAdded = "true";
-    }
-    var telInputs = form.querySelectorAll("input[type='tel']");
-    telInputs.forEach((input) => {
-      input.setAttribute("pattern", "[0-9+]*");
-    });
-  });
-
-  // form submission for widget
-  const handleSubmitW = async (event) => {
-    event.preventDefault();
-    setShow(false);
-    const response = await axios.get(
-      "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
-    );
-    const ipData = {
-      city: response?.data?.city,
-      country: response?.data?.country_name,
-      ip: response?.data?.ip,
-      timezone: response?.data?.time_zone?.name,
-      callingCode: response?.data?.calling_code,
-    };
-    const formData = new FormData(event.target);
-    const sendData = {
-      data_fields: { ...ipData },
-    };
-    for (const [key, value] of formData.entries()) {
-      if (key === "name" || key === "phone_number") {
-        sendData[key] = value;
-      }
-      sendData.data_fields[key] = value;
-    }
-    await axios
-      .post(
-        "https://app.spotcalls.com:8002/v1/pub/call",
-        { ...sendData, phone_number: phone },
-        {
-          headers: {
-            WIDGET_KEY: wkey,
-          },
-        }
-      )
-      .then((response) => {
-        document.getElementById("success_p").innerHTML =
-          "Successfully submitted";
-        setTimeout(() => {
-          document.getElementById("success_p").innerHTML = "";
-        }, 2000);
-      });
-  };
-
   // styles for widget
   const styles = {
     main: {
@@ -209,6 +235,8 @@ function App({ wkey }) {
       border: "none",
       outline: "none",
       zIndex: 1000,
+      cursor: "pointer",
+      borderRadius: "40%",
     },
     wrapper: {
       backgroundImage: data?.design?.background_image
@@ -325,7 +353,7 @@ function App({ wkey }) {
 
   return (
     <div id="widget" style={styles.main}>
-      {forms.length < 1 && (
+      {data?.design?.sticky_button_state && (
         <>
           {show && (
             <div id="widget-container" ref={formRef} style={styles.wrapper}>
@@ -637,22 +665,15 @@ function App({ wkey }) {
           >
             <svg
               viewBox="0 0 24 24"
-              fill="none"
+              fill="black"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle
-                cx="3"
-                cy="3"
-                r="3"
-                transform="matrix(-1 0 0 1 22 2)"
-                stroke="#1C274C"
-                strokeWidth="1.5"
-              />
               <path
-                d="M14 2.20004C13.3538 2.06886 12.6849 2 12 2C10.1786 2 8.47087 2.48697 7 3.33782M21.8 10C21.9311 10.6462 22 11.3151 22 12C22 17.5228 17.5228 22 12 22C10.4003 22 8.88837 21.6244 7.54753 20.9565C7.19121 20.7791 6.78393 20.72 6.39939 20.8229L4.17335 21.4185C3.20701 21.677 2.32295 20.793 2.58151 19.8267L3.17712 17.6006C3.28001 17.2161 3.22094 16.8088 3.04346 16.4525C2.37562 15.1116 2 13.5997 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
-                stroke="#1C274C"
-                strokeWidth="1.5"
-                strokeLinecap="round"
+                d="M15 3C16.5315 3.17014 17.9097 3.91107 19 5C20.0903 6.08893 20.8279 7.46869 21 9M14.5 6.5C15.2372 6.64382 15.9689 6.96892 16.5 7.5C17.0311 8.03108 17.3562 8.76284 17.5 9.5M8.20049 15.799C1.3025 8.90022 2.28338 5.74115 3.01055 4.72316C3.10396 4.55862 5.40647 1.11188 7.87459 3.13407C14.0008 8.17945 6.5 8 11.3894 12.6113C16.2788 17.2226 15.8214 9.99995 20.8659 16.1249C22.8882 18.594 19.4413 20.8964 19.2778 20.9888C18.2598 21.717 15.0995 22.6978 8.20049 15.799Z"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               />
             </svg>
           </button>
