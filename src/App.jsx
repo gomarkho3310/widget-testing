@@ -55,38 +55,41 @@ function App({ wkey }) {
     const submitButton = form.querySelector('button[type="submit"]');
     if (!submitButton.dataset.listenerAdded) {
       submitButton.dataset.listenerAdded = "true";
-      submitButton.addEventListener("click", async (event) => {
-        event.preventDefault();
-        const response = await axios.get(
-          "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
-        );
-        const ipData = {
-          city: response?.data?.city,
-          country: response?.data?.country_name,
-          ip: response?.data?.ip,
-          timezone: response?.data?.time_zone?.name,
-          calling_code: response?.data?.calling_code,
-        };
-        const formData = new FormData(form);
-        const sendData = {
-          data_fields: { ...ipData },
-        };
-        for (const [key, value] of formData.entries()) {
-          if (key === "name" || key === "phone_number") {
-            sendData[key] = value;
+      if (!submitButton.dataset.called) {
+        submitButton.dataset.called = true;
+        submitButton.addEventListener("click", async (event) => {
+          event.preventDefault();
+          const response = await axios.get(
+            "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
+          );
+          const ipData = {
+            city: response?.data?.city,
+            country: response?.data?.country_name,
+            ip: response?.data?.ip,
+            timezone: response?.data?.time_zone?.name,
+            calling_code: response?.data?.calling_code,
+          };
+          const formData = new FormData(form);
+          const sendData = {
+            data_fields: { ...ipData },
+          };
+          for (const [key, value] of formData.entries()) {
+            if (key === "name" || key === "phone_number") {
+              sendData[key] = value;
+            }
+            sendData.data_fields[key] = value;
           }
-          sendData.data_fields[key] = value;
-        }
-        await axios.post(
-          "https://app.spotcalls.com:8002/v1/pub/call",
-          sendData,
-          {
-            headers: {
-              WIDGET_KEY: wkey,
-            },
-          }
-        );
-      });
+          await axios.post(
+            "https://app.spotcalls.com:8002/v1/pub/call",
+            sendData,
+            {
+              headers: {
+                WIDGET_KEY: wkey,
+              },
+            }
+          );
+        });
+      }
     }
   });
 
