@@ -48,83 +48,46 @@ function App({ wkey }) {
   }, []);
 
   // form handling for event
-  const handleSubmitSpotCall = async (event) => {
-    event.preventDefault();
-    const response = await axios.get(
-      "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
-    );
-    const ipData = {
-      city: response?.data?.city,
-      country: response?.data?.country_name,
-      ip: response?.data?.ip,
-      timezone: response?.data?.time_zone?.name,
-      calling_code: response?.data?.calling_code,
-    };
-    const form = event.target;
-    const formData = new FormData(form);
-    const sendData = {
-      data_fields: { ...ipData },
-    };
-    for (const [key, value] of formData.entries()) {
-      if (key === "name" || key === "phone_number") {
-        sendData[key] = value;
-      }
-      sendData.data_fields[key] = value;
-    }
-    await axios.post("https://app.spotcalls.com:8002/v1/pub/call", sendData, {
-      headers: {
-        WIDGET_KEY: wkey,
-      },
-    });
-    const hiddenDiv = document.querySelector(".js-successbox");
-    if (hiddenDiv) {
-      hiddenDiv.style.display = "";
-      const dataText =
-        hiddenDiv.getAttribute("data-success-message") ||
-        "Thank you! Your data has been submitted.";
-      hiddenDiv.textContent = dataText;
-    }
-    form.reset();
-    var divWithData = document.getElementById("allrecords");
-    formData.append("tildaspec-referer", window.location.href);
-    formData.append("tildaspec-formid", form.getAttribute("id"));
-    formData.append(
-      "tildaspec-formskey",
-      divWithData.getAttribute("data-tilda-formskey")
-    );
-    formData.append("tildaspec-version-lib", "02.001");
-    formData.append(
-      "tildaspec-pageid",
-      divWithData.getAttribute("data-tilda-page-id")
-    );
-    formData.append(
-      "tildaspec-projectid",
-      divWithData.getAttribute("data-tilda-project-id")
-    );
-    formData.append("tildaspec-lang", "EN");
-    axios.post("https://forms.tildaapi.one/procces/", formData, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-      },
-    });
-    const successUrl = form.getAttribute("data-success-url");
-    if (successUrl) {
-      window.location.href = successUrl;
-    }
-  };
   var forms = document.querySelectorAll(
     "form:has(input[type='tel']):not(#widget-container-form)"
   );
   forms.forEach((form) => {
-    form.classList.remove("js-form-proccess");
-    if (!form.dataset.listenerAdded) {
-      form.addEventListener("submit", handleSubmitSpotCall);
-      form.dataset.listenerAdded = "true";
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (!submitButton.dataset.listenerAdded) {
+      submitButton.dataset.listenerAdded = "true";
+      submitButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const response = await axios.get(
+          "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
+        );
+        const ipData = {
+          city: response?.data?.city,
+          country: response?.data?.country_name,
+          ip: response?.data?.ip,
+          timezone: response?.data?.time_zone?.name,
+          calling_code: response?.data?.calling_code,
+        };
+        const formData = new FormData(form);
+        const sendData = {
+          data_fields: { ...ipData },
+        };
+        for (const [key, value] of formData.entries()) {
+          if (key === "name" || key === "phone_number") {
+            sendData[key] = value;
+          }
+          sendData.data_fields[key] = value;
+        }
+        await axios.post(
+          "https://app.spotcalls.com:8002/v1/pub/call",
+          sendData,
+          {
+            headers: {
+              WIDGET_KEY: wkey,
+            },
+          }
+        );
+      });
     }
-    var telInputs = form.querySelectorAll("input[type='tel']");
-    telInputs.forEach((input) => {
-      input.setAttribute("pattern", "[0-9+]*");
-    });
   });
 
   // form submission for widget
