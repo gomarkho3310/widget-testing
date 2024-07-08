@@ -55,10 +55,10 @@ function App({ wkey }) {
     const submitButton = form.querySelector('button[type="submit"]');
     if (!submitButton.dataset.listenerAdded) {
       submitButton.dataset.listenerAdded = "true";
-      if (!submitButton.dataset.called) {
-        submitButton.dataset.called = true;
-        submitButton.addEventListener("click", async (event) => {
-          event.preventDefault();
+      submitButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        if (!submitButton.dataset.called) {
+          submitButton.dataset.called = true;
           const response = await axios.get(
             "https://api.ipgeolocation.io/ipgeo?apiKey=22987f3243f34ec6ba5902c16e7efee6"
           );
@@ -88,8 +88,8 @@ function App({ wkey }) {
               },
             }
           );
-        });
-      }
+        }
+      });
     }
   });
 
